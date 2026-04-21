@@ -15,7 +15,74 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $totalProducts = \App\Models\Product::count();
+    $totalCategories = \App\Models\Category::count();
+    $totalBrands = \App\Models\Brand::count();
+    $totalUsers = \App\Models\User::count();
+    
+    // Stock statistics
+    $lowStockProducts = \App\Models\Product::with('inventory')
+        ->whereHas('inventory', function($query) {
+            $query->whereBetween('quantity', [1, 10]);
+        })->count();
+    
+    $outOfStockProducts = \App\Models\Product::with('inventory')
+        ->whereHas('inventory', function($query) {
+            $query->where('quantity', 0);
+        })
+        ->orWhereDoesntHave('inventory')
+        ->count();
+    
+    $totalInventoryValue = \App\Models\Product::with('inventory')
+        ->get()
+        ->sum(function($product) {
+            return $product->price * ($product->inventory ? $product->inventory->quantity : 0);
+        });
+    
+    // Recent transactions
+    $recentTransactions = \App\Models\StockTransaction::with(['product', 'user'])
+        ->latest()
+        ->take(5)
+        ->get();
+    
+    // Low stock products - fixed query
+    $lowStockItems = \App\Models\Product::with(['inventory', 'category', 'brand'])
+        ->whereHas('inventory', function($query) {
+            $query->where('quantity', '<=', 10)->where('quantity', '>', 0);
+        })
+        ->get()
+        ->sortBy(function($product) {
+            return $product->inventory ? $product->inventory->quantity : 0;
+        })
+        ->take(5);
+    
+    // Stock by category
+    $stockByCategory = \App\Models\Category::withCount('products')
+        ->with(['products.inventory'])
+        ->get()
+        ->map(function($category) {
+            $totalStock = $category->products->sum(function($product) {
+                return $product->inventory ? $product->inventory->quantity : 0;
+            });
+            return [
+                'name' => $category->category_name,
+                'stock' => $totalStock,
+                'products' => $category->products_count
+            ];
+        });
+    
+    return view('dashboard', compact(
+        'totalProducts',
+        'totalCategories', 
+        'totalBrands',
+        'totalUsers',
+        'lowStockProducts',
+        'outOfStockProducts',
+        'totalInventoryValue',
+        'recentTransactions',
+        'lowStockItems',
+        'stockByCategory'
+    ));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -43,15 +110,27 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     // User management
     Route::resource('users', UserController::class);
+    Route::get('users/archived/list', [UserController::class, 'archived'])->name('users.archived');
+    Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
     
     // Category management
     Route::resource('categories', CategoryController::class);
+    Route::get('categories/archived/list', [CategoryController::class, 'archived'])->name('categories.archived');
+    Route::post('categories/{id}/restore', [CategoryController::class, 'restore'])->name('categories.restore');
+    Route::delete('categories/{id}/force-delete', [CategoryController::class, 'forceDelete'])->name('categories.forceDelete');
     
     // Brand management
     Route::resource('brands', BrandController::class);
+    Route::get('brands/archived/list', [BrandController::class, 'archived'])->name('brands.archived');
+    Route::post('brands/{id}/restore', [BrandController::class, 'restore'])->name('brands.restore');
+    Route::delete('brands/{id}/force-delete', [BrandController::class, 'forceDelete'])->name('brands.forceDelete');
     
     // Product management (full CRUD)
     Route::resource('products', AdminProductController::class);
+    Route::get('products/archived/list', [AdminProductController::class, 'archived'])->name('products.archived');
+    Route::post('products/{id}/restore', [AdminProductController::class, 'restore'])->name('products.restore');
+    Route::delete('products/{id}/force-delete', [AdminProductController::class, 'forceDelete'])->name('products.forceDelete');
 });
 
 require __DIR__.'/auth.php';

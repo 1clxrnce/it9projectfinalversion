@@ -12,8 +12,42 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with(['category', 'brand', 'inventory'])->paginate(15);
-        return view('admin.products.index', compact('products'));
+        $products = Product::with(['category', 'brand', 'inventory'])->get();
+        $categories = Category::all();
+        $brands = Brand::all();
+        return view('admin.products.index', compact('products', 'categories', 'brands'));
+    }
+
+    public function archived()
+    {
+        $products = Product::onlyTrashed()->with(['category', 'brand', 'inventory'])->get();
+        $categories = Category::all();
+        $brands = Brand::all();
+        return view('admin.products.archived', compact('products', 'categories', 'brands'));
+    }
+
+    public function restore($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        $product->restore();
+        
+        return redirect()->route('admin.products.archived')
+            ->with('success', 'Product restored successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        $product = Product::onlyTrashed()->findOrFail($id);
+        
+        // Delete image if exists
+        if ($product->image && \Storage::disk('public')->exists($product->image)) {
+            \Storage::disk('public')->delete($product->image);
+        }
+        
+        $product->forceDelete();
+        
+        return redirect()->route('admin.products.archived')
+            ->with('success', 'Product permanently deleted');
     }
 
     public function create()
@@ -78,13 +112,8 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        // Delete image if exists
-        if ($product->image && \Storage::disk('public')->exists($product->image)) {
-            \Storage::disk('public')->delete($product->image);
-        }
-        
-        $product->delete();
+        $product->delete(); // Soft delete
         return redirect()->route('admin.products.index')
-            ->with('success', 'Product deleted successfully');
+            ->with('success', 'Product moved to archive');
     }
 }

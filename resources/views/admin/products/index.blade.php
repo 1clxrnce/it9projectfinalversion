@@ -5,14 +5,24 @@
                 <h2 class="font-bold text-2xl text-gray-900 leading-tight">Products</h2>
                 <p class="text-sm text-gray-500 mt-1">Manage your product inventory</p>
             </div>
-            <a href="{{ route('admin.products.create') }}" class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-violet-700 font-medium shadow-lg shadow-indigo-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-indigo-500/40 w-full sm:w-auto text-center">
-                <span class="flex items-center justify-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-                    </svg>
-                    Add Product
-                </span>
-            </a>
+            <div class="flex gap-3 w-full sm:w-auto">
+                <a href="{{ route('admin.products.archived') }}" class="bg-slate-600 text-white px-6 py-3 rounded-xl hover:bg-slate-700 font-medium shadow-lg transition-all duration-200 flex-1 sm:flex-initial text-center">
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        Archive
+                    </span>
+                </a>
+                <a href="{{ route('admin.products.create') }}" class="bg-gradient-to-r from-indigo-600 to-violet-600 text-white px-6 py-3 rounded-xl hover:from-indigo-700 hover:to-violet-700 font-medium shadow-lg shadow-indigo-500/30 transition-all duration-200 hover:shadow-xl hover:shadow-indigo-500/40 flex-1 sm:flex-initial text-center">
+                    <span class="flex items-center justify-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                        </svg>
+                        Add Product
+                    </span>
+                </a>
+            </div>
         </div>
     </x-slot>
 
@@ -66,7 +76,7 @@
                             <button data-category="all" class="category-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
                                 All
                             </button>
-                            @foreach($products->pluck('category')->unique() as $category)
+                            @foreach($categories as $category)
                             <button data-category="{{ $category->category_id }}" class="category-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-slate-200 hover:border-indigo-300">
                                 {{ $category->category_name }}
                             </button>
@@ -78,11 +88,11 @@
                     <div>
                         <label class="text-xs font-bold text-gray-900 uppercase tracking-wider mb-3 block">Brands</label>
                         <div class="flex flex-wrap gap-2">
-                            <button data-brand="all" class="brand-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-violet-600 text-white shadow-lg shadow-violet-500/30">
+                            <button data-brand="all" class="brand-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-indigo-600 text-white shadow-lg shadow-indigo-500/30">
                                 All
                             </button>
-                            @foreach($products->pluck('brand')->unique() as $brand)
-                            <button data-brand="{{ $brand->brand_id }}" class="brand-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-slate-200 hover:border-violet-300">
+                            @foreach($brands as $brand)
+                            <button data-brand="{{ $brand->brand_id }}" class="brand-chip px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 bg-white text-gray-700 border border-slate-200 hover:border-indigo-300">
                                 {{ $brand->brand_name }}
                             </button>
                             @endforeach
@@ -102,7 +112,7 @@
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Showing</p>
-                                <p class="text-lg font-bold text-gray-900"><span id="visibleCount">{{ $products->count() }}</span> <span class="text-gray-400 font-normal">of {{ $products->total() }}</span></p>
+                                <p class="text-lg font-bold text-gray-900"><span id="visibleCount">{{ $products->count() }}</span> <span class="text-gray-400 font-normal">of {{ $products->count() }}</span></p>
                             </div>
                         </div>
                         <select id="sortSelect" class="w-full sm:w-auto min-w-[200px] px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white font-medium text-gray-700 shadow-sm appearance-none bg-no-repeat bg-right pr-10" style="background-image: url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%236b7280%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22M19 9l-7 7-7-7%22/%3E%3C/svg%3E'); background-size: 1.5em; background-position: right 0.5rem center;">
@@ -113,6 +123,34 @@
                             <option value="stock-asc">Stock: Low → High</option>
                             <option value="stock-desc">Stock: High → Low</option>
                         </select>
+                    </div>
+
+                    {{-- Stock Status Legend --}}
+                    <div class="bg-gradient-to-r from-indigo-50 to-violet-50 rounded-xl border border-indigo-100 px-6 py-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="text-xs font-bold text-indigo-900 uppercase tracking-wider">Stock Status Guide</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 bg-emerald-500 rounded-full flex-shrink-0"></span>
+                                <span class="text-xs text-gray-700"><span class="font-semibold">High:</span> 21+</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 bg-yellow-500 rounded-full flex-shrink-0"></span>
+                                <span class="text-xs text-gray-700"><span class="font-semibold">Medium:</span> 11-20</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 bg-rose-500 rounded-full flex-shrink-0 animate-pulse"></span>
+                                <span class="text-xs text-gray-700"><span class="font-semibold">Low:</span> 1-10</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 bg-gray-900 rounded-full flex-shrink-0"></span>
+                                <span class="text-xs text-gray-700"><span class="font-semibold">Out:</span> 0</span>
+                            </div>
+                        </div>
                     </div>
 
                     {{-- Products Grid --}}
@@ -141,12 +179,28 @@
                                 
                                 {{-- Floating Stock Badge --}}
                                 <div class="absolute top-4 left-4">
-                                    @if($product->inventory && $product->inventory->quantity > 0)
-                                        <span class="backdrop-blur-md bg-emerald-500/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg">
-                                            {{ $product->inventory->quantity }} in stock
+                                    @php
+                                        $quantity = $product->inventory ? $product->inventory->quantity : 0;
+                                    @endphp
+                                    
+                                    @if($quantity >= 21)
+                                        <span class="backdrop-blur-md bg-emerald-500/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg flex items-center gap-1.5">
+                                            <span class="w-2 h-2 bg-white rounded-full"></span>
+                                            {{ $quantity }} in stock
+                                        </span>
+                                    @elseif($quantity >= 11)
+                                        <span class="backdrop-blur-md bg-yellow-500/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg flex items-center gap-1.5">
+                                            <span class="w-2 h-2 bg-white rounded-full"></span>
+                                            {{ $quantity }} in stock
+                                        </span>
+                                    @elseif($quantity >= 1)
+                                        <span class="backdrop-blur-md bg-rose-500/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg flex items-center gap-1.5">
+                                            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+                                            Low Stock: {{ $quantity }}
                                         </span>
                                     @else
-                                        <span class="backdrop-blur-md bg-rose-500/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg">
+                                        <span class="backdrop-blur-md bg-gray-900/90 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg flex items-center gap-1.5">
+                                            <span class="w-2 h-2 bg-white rounded-full"></span>
                                             Out of stock
                                         </span>
                                     @endif
@@ -176,11 +230,11 @@
                                         <form action="{{ route('admin.products.destroy', $product->product_id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" onclick="return confirm('Delete this product?')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50 transition text-left">
+                                            <button type="submit" onclick="return confirm('Move this product to archive?')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-rose-600 hover:bg-rose-50 transition text-left">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
                                                 </svg>
-                                                Delete Product
+                                                Archive Product
                                             </button>
                                         </form>
                                     </div>
@@ -214,11 +268,6 @@
                             </div>
                         </div>
                         @endforeach
-                    </div>
-
-                    {{-- Pagination --}}
-                    <div class="mt-8">
-                        {{ $products->links() }}
                     </div>
                 </main>
             </div>
@@ -301,14 +350,14 @@
                     if (brand === 'all') {
                         selectedBrands = ['all'];
                         document.querySelectorAll('.brand-chip').forEach(c => {
-                            c.classList.remove('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                            c.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                             c.classList.add('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                         });
-                        this.classList.add('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                        this.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                         this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                     } else {
                         const allChip = document.querySelector('.brand-chip[data-brand="all"]');
-                        allChip.classList.remove('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                        allChip.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                         allChip.classList.add('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                         
                         const index = selectedBrands.indexOf('all');
@@ -317,17 +366,17 @@
                         const brandIndex = selectedBrands.indexOf(brand);
                         if (brandIndex > -1) {
                             selectedBrands.splice(brandIndex, 1);
-                            this.classList.remove('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                            this.classList.remove('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                             this.classList.add('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                         } else {
                             selectedBrands.push(brand);
-                            this.classList.add('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                            this.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                             this.classList.remove('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                         }
                         
                         if (selectedBrands.length === 0) {
                             selectedBrands = ['all'];
-                            allChip.classList.add('bg-violet-600', 'text-white', 'shadow-lg', 'shadow-violet-500/30');
+                            allChip.classList.add('bg-indigo-600', 'text-white', 'shadow-lg', 'shadow-indigo-500/30');
                             allChip.classList.remove('bg-white', 'text-gray-700', 'border', 'border-slate-200');
                         }
                     }
