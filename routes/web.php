@@ -11,10 +11,23 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $brands = \App\Models\Brand::all();
+    $categories = \App\Models\Category::withCount('products')->get();
+    $totalProducts = \App\Models\Product::count();
+    
+    return view('welcome', compact('brands', 'categories', 'totalProducts'));
+})->name('home');
+
+// Public product browsing (for customers and guests)
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('/dashboard', function () {
+    // Redirect customers to homepage
+    if (Auth::check() && Auth::user()->isCustomer()) {
+        return redirect()->route('home');
+    }
+    
     $totalProducts = \App\Models\Product::count();
     $totalCategories = \App\Models\Category::count();
     $totalBrands = \App\Models\Brand::count();
@@ -106,14 +119,8 @@ Route::middleware(['auth', 'role:staff,admin'])->group(function () {
     Route::get('/transactions/{transaction}', [StockTransactionController::class, 'show'])->name('transactions.show');
 });
 
-// Admin routes - Full access
-Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    // User management
-    Route::resource('users', UserController::class);
-    Route::get('users/archived/list', [UserController::class, 'archived'])->name('users.archived');
-    Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
-    Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
-    
+// Staff and Admin routes - Products, Categories, Brands management
+Route::middleware(['auth', 'role:staff,admin'])->prefix('admin')->name('admin.')->group(function () {
     // Category management
     Route::resource('categories', CategoryController::class);
     Route::get('categories/archived/list', [CategoryController::class, 'archived'])->name('categories.archived');
@@ -131,6 +138,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('products/archived/list', [AdminProductController::class, 'archived'])->name('products.archived');
     Route::post('products/{id}/restore', [AdminProductController::class, 'restore'])->name('products.restore');
     Route::delete('products/{id}/force-delete', [AdminProductController::class, 'forceDelete'])->name('products.forceDelete');
+});
+
+// Admin only routes - User management
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    // User management (admin only)
+    Route::resource('users', UserController::class);
+    Route::get('users/archived/list', [UserController::class, 'archived'])->name('users.archived');
+    Route::post('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.forceDelete');
 });
 
 require __DIR__.'/auth.php';

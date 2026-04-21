@@ -53,7 +53,7 @@
                         {{-- Transactions Accordion --}}
                         <div>
                             <button @click="openGroup = openGroup === 'transactions' ? '' : 'transactions'"
-                                    class="flex items-center justify-between w-full px-4 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded mx-2"
+                                    class="flex items-center justify-between w-full px-4 py-2 text-sm hover:bg-gray-700 rounded mx-2 {{ request()->routeIs('transactions.*') ? 'bg-gray-700 text-white' : 'text-gray-300' }}"
                                     style="width: calc(100% - 1rem)">
                                 <div class="flex items-center gap-3">
                                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,8 +96,10 @@
                             </svg>
                             <span x-show="sidebarOpen" class="truncate">Users</span>
                         </a>
+                        @endif
 
-                        {{-- Products --}}
+                        {{-- Products (staff and admin) --}}
+                        @if(Auth::user()->isAdmin() || Auth::user()->isStaff())
                         <a href="{{ route('admin.products.index') }}"
                            class="flex items-center gap-3 px-4 py-2 text-sm hover:bg-gray-700 rounded mx-2
                                   {{ request()->routeIs('admin.products.*') ? 'bg-gray-700 text-white' : 'text-gray-300' }}">
