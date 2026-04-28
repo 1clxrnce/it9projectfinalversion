@@ -70,6 +70,9 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
+            
+            // Automatically copy to public directory
+            $this->copyStorageToPublic();
         }
 
         Product::create($validated);
@@ -102,6 +105,9 @@ class ProductController extends Controller
                 \Storage::disk('public')->delete($product->image);
             }
             $validated['image'] = $request->file('image')->store('products', 'public');
+            
+            // Automatically copy to public directory
+            $this->copyStorageToPublic();
         }
 
         $product->update($validated);
@@ -115,5 +121,48 @@ class ProductController extends Controller
         $product->delete(); // Soft delete
         return redirect()->route('admin.products.index')
             ->with('success', 'Product moved to archive');
+    }
+
+    /**
+     * Copy storage files to public directory for web access
+     */
+    private function copyStorageToPublic()
+    {
+        $sourceDir = storage_path('app/public');
+        $destDir = public_path('storage');
+
+        // Ensure destination directory exists
+        if (!is_dir($destDir)) {
+            mkdir($destDir, 0755, true);
+        }
+
+        // Copy all files from storage to public
+        $this->recursiveCopy($sourceDir, $destDir);
+    }
+
+    /**
+     * Recursively copy directory contents
+     */
+    private function recursiveCopy($source, $dest)
+    {
+        if (!is_dir($dest)) {
+            mkdir($dest, 0755, true);
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \RecursiveDirectoryIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST
+        );
+
+        foreach ($iterator as $item) {
+            $destPath = $dest . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+            if ($item->isDir()) {
+                if (!is_dir($destPath)) {
+                    mkdir($destPath, 0755, true);
+                }
+            } else {
+                copy($item, $destPath);
+            }
+        }
     }
 }

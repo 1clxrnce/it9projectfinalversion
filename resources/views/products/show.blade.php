@@ -11,7 +11,7 @@
                 <div class="p-6">
                     <div class="mb-6">
                         <h1 class="text-3xl font-bold mb-2">{{ $product->product_name }}</h1>
-                        <p class="text-gray-600">{{ $product->category->category_name }} - {{ $product->brand->brand_name }}</p>
+                        <p class="text-gray-600">{{ $product->category->category_name }} - {{ $product->brand ? $product->brand->brand_name : 'No Brand' }}</p>
                     </div>
 
                     <div class="mb-6">

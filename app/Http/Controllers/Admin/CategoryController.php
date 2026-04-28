@@ -14,6 +14,30 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
+    public function archived()
+    {
+        $categories = Category::onlyTrashed()->withCount('products')->paginate(15);
+        return view('admin.categories.archived', compact('categories'));
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->restore();
+        
+        return redirect()->route('admin.categories.archived')
+            ->with('success', 'Category restored successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        $category = Category::onlyTrashed()->findOrFail($id);
+        $category->forceDelete();
+        
+        return redirect()->route('admin.categories.archived')
+            ->with('success', 'Category permanently deleted');
+    }
+
     public function create()
     {
         return view('admin.categories.create');
@@ -22,8 +46,18 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'category_name' => 'required|string|max:255|unique:categories,category_name',
+            'category_name' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('categories', 'category_name')->whereNull('deleted_at')
+            ],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('categories', 'public');
+        }
 
         Category::create($validated);
 
@@ -39,8 +73,24 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $validated = $request->validate([
-            'category_name' => 'required|string|max:255|unique:categories,category_name,' . $category->category_id . ',category_id',
+            'category_name' => [
+                'required',
+                'string',
+                'max:255',
+                \Illuminate\Validation\Rule::unique('categories', 'category_name')
+                    ->ignore($category->category_id, 'category_id')
+                    ->whereNull('deleted_at')
+            ],
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
         ]);
+
+        if ($request->hasFile('image')) {
+            // Delete old image if exists
+            if ($category->image && \Storage::disk('public')->exists($category->image)) {
+                \Storage::disk('public')->delete($category->image);
+            }
+            $validated['image'] = $request->file('image')->store('categories', 'public');
+        }
 
         $category->update($validated);
 
@@ -50,8 +100,8 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        $category->delete();
+        $category->delete(); // Soft delete
         return redirect()->route('admin.categories.index')
-            ->with('success', 'Category deleted successfully');
+            ->with('success', 'Category moved to archive');
     }
 }

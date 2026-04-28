@@ -34,7 +34,7 @@
                                 <tr>
                                     <td class="px-6 py-4">{{ $product->product_name }}</td>
                                     <td class="px-6 py-4">{{ $product->category->category_name }}</td>
-                                    <td class="px-6 py-4">{{ $product->brand->brand_name }}</td>
+                                    <td class="px-6 py-4">{{ $product->brand ? $product->brand->brand_name : 'No Brand' }}</td>
                                     <td class="px-6 py-4">₱{{ number_format($product->price, 2) }}</td>
                                     <td class="px-6 py-4 font-bold">{{ $stock }}</td>
                                     <td class="px-6 py-4">

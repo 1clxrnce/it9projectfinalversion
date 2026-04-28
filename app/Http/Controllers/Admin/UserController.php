@@ -15,6 +15,30 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
+    public function archived()
+    {
+        $users = User::onlyTrashed()->paginate(15);
+        return view('admin.users.archived', compact('users'));
+    }
+
+    public function restore($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->restore();
+        
+        return redirect()->route('admin.users.archived')
+            ->with('success', 'User restored successfully');
+    }
+
+    public function forceDelete($id)
+    {
+        $user = User::onlyTrashed()->findOrFail($id);
+        $user->forceDelete();
+        
+        return redirect()->route('admin.users.archived')
+            ->with('success', 'User permanently deleted');
+    }
+
     public function create()
     {
         return view('admin.users.create');
@@ -25,7 +49,11 @@ class UserController extends Controller
         $validated = $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => [
+                'required',
+                'email',
+                \Illuminate\Validation\Rule::unique('users', 'email')->whereNull('deleted_at')
+            ],
             'password' => 'required|min:8|confirmed',
             'role' => 'required|in:customer,staff,admin',
             'mobilePhone' => 'nullable|string|max:20',
@@ -48,7 +76,13 @@ class UserController extends Controller
         $validated = $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->user_id . ',user_id',
+            'email' => [
+                'required',
+                'email',
+                \Illuminate\Validation\Rule::unique('users', 'email')
+                    ->ignore($user->user_id, 'user_id')
+                    ->whereNull('deleted_at')
+            ],
             'role' => 'required|in:customer,staff,admin',
             'mobilePhone' => 'nullable|string|max:20',
         ]);
@@ -66,8 +100,8 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
+        $user->delete(); // Soft delete
         return redirect()->route('admin.users.index')
-            ->with('success', 'User deleted successfully');
+            ->with('success', 'User moved to archive');
     }
 }

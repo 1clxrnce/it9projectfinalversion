@@ -1,16 +1,19 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Transaction Confirmation') }}
-        </h2>
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+                <h2 class="font-bold text-2xl text-white leading-tight">Transaction Confirmation</h2>
+                <p class="text-sm text-gray-400 mt-1">Stock transaction completed successfully</p>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+    <div class="py-8 bg-gray-900 min-h-screen">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             @if(session('success'))
-                <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-6 rounded">
-                    <div class="flex items-center">
-                        <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <div class="bg-emerald-900/50 border-l-4 border-emerald-500 text-emerald-300 px-6 py-4 rounded-xl mb-6 shadow-sm">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-6 h-6 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                         </svg>
                         <span class="font-bold text-lg">{{ session('success') }}</span>
@@ -18,98 +21,98 @@
                 </div>
             @endif
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <h3 class="text-2xl font-bold mb-6 text-center">Stock Transaction Completed</h3>
+            <div class="bg-gray-800 rounded-2xl border border-gray-700 shadow-xl overflow-hidden">
+                <div class="p-8">
+                    <h3 class="text-2xl font-bold mb-8 text-center text-white">Stock Transaction Completed</h3>
 
                     <!-- Transaction Details -->
-                    <div class="bg-gray-50 rounded-lg p-6 mb-6">
-                        <h4 class="font-semibold text-lg mb-4 border-b pb-2">Transaction Details</h4>
+                    <div class="bg-gray-750 rounded-xl p-6 mb-6 border border-gray-700">
+                        <h4 class="font-semibold text-lg mb-4 pb-3 border-b border-gray-700 text-white">Transaction Details</h4>
                         
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <p class="text-sm text-gray-600">Transaction ID</p>
-                                <p class="font-semibold">#{{ $transaction->transaction_id }}</p>
+                                <p class="text-sm text-gray-400">Transaction ID</p>
+                                <p class="font-semibold text-white">#{{ $transaction->transaction_id }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Date & Time</p>
-                                <p class="font-semibold">{{ $transaction->transactionDate->format('M d, Y h:i A') }}</p>
+                                <p class="text-sm text-gray-400">Date & Time</p>
+                                <p class="font-semibold text-white">{{ $transaction->transactionDate->format('M d, Y h:i A') }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Transaction Type</p>
+                                <p class="text-sm text-gray-400">Transaction Type</p>
                                 <p class="font-semibold">
-                                    <span class="px-3 py-1 rounded text-sm
-                                        @if($transaction->transactionType === 'in') bg-green-100 text-green-800
-                                        @elseif($transaction->transactionType === 'out') bg-red-100 text-red-800
-                                        @else bg-blue-100 text-blue-800 @endif">
+                                    <span class="px-3 py-1 rounded-full text-sm font-semibold
+                                        @if($transaction->transactionType === 'in') bg-emerald-900/50 text-emerald-400
+                                        @elseif($transaction->transactionType === 'out') bg-red-900/50 text-red-400
+                                        @else bg-blue-900/50 text-blue-400 @endif">
                                         {{ ucfirst($transaction->transactionType) }}
                                     </span>
                                 </p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Processed By</p>
-                                <p class="font-semibold">{{ $transaction->user->firstName }} {{ $transaction->user->lastName }}</p>
+                                <p class="text-sm text-gray-400">Processed By</p>
+                                <p class="font-semibold text-white">{{ $transaction->user->firstName }} {{ $transaction->user->lastName }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Product Information -->
-                    <div class="bg-blue-50 rounded-lg p-6 mb-6">
-                        <h4 class="font-semibold text-lg mb-4 border-b pb-2">Product Information</h4>
+                    <div class="bg-blue-900/20 rounded-xl p-6 mb-6 border border-blue-800/30">
+                        <h4 class="font-semibold text-lg mb-4 pb-3 border-b border-blue-800/30 text-white">Product Information</h4>
                         
                         <div class="mb-4">
-                            <p class="text-sm text-gray-600">Product Name</p>
-                            <p class="font-bold text-xl">{{ $transaction->product->product_name }}</p>
+                            <p class="text-sm text-gray-400">Product Name</p>
+                            <p class="font-bold text-xl text-white">{{ $transaction->product->product_name }}</p>
                         </div>
                         
                         <div class="grid grid-cols-3 gap-4">
                             <div>
-                                <p class="text-sm text-gray-600">Category</p>
-                                <p class="font-semibold">{{ $transaction->product->category->category_name }}</p>
+                                <p class="text-sm text-gray-400">Category</p>
+                                <p class="font-semibold text-white">{{ $transaction->product->category->category_name }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Brand</p>
-                                <p class="font-semibold">{{ $transaction->product->brand->brand_name }}</p>
+                                <p class="text-sm text-gray-400">Brand</p>
+                                <p class="font-semibold text-white">{{ $transaction->product->brand ? $transaction->product->brand->brand_name : 'No Brand' }}</p>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Price</p>
-                                <p class="font-semibold">₱{{ number_format($transaction->product->price, 2) }}</p>
+                                <p class="text-sm text-gray-400">Price</p>
+                                <p class="font-semibold text-white">₱{{ number_format($transaction->product->price, 2) }}</p>
                             </div>
                         </div>
                     </div>
 
                     <!-- Stock Changes -->
-                    <div class="bg-yellow-50 rounded-lg p-6 mb-6">
-                        <h4 class="font-semibold text-lg mb-4 border-b pb-2">Stock Changes</h4>
+                    <div class="bg-yellow-900/20 rounded-xl p-6 mb-6 border border-yellow-800/30">
+                        <h4 class="font-semibold text-lg mb-4 pb-3 border-b border-yellow-800/30 text-white">Stock Changes</h4>
                         
                         <div class="flex items-center justify-center space-x-8">
                             <div class="text-center">
-                                <p class="text-sm text-gray-600 mb-2">Previous Stock</p>
-                                <p class="text-4xl font-bold text-gray-700">
+                                <p class="text-sm text-gray-400 mb-2">Previous Stock</p>
+                                <p class="text-4xl font-bold text-gray-300">
                                     {{ session('oldQuantity', $transaction->product->inventory ? $transaction->product->inventory->quantity : 0) }}
                                 </p>
                             </div>
                             
                             <div class="text-center">
-                                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                 </svg>
                             </div>
                             
                             <div class="text-center">
-                                <p class="text-sm text-gray-600 mb-2">New Stock</p>
-                                <p class="text-4xl font-bold text-green-600">
+                                <p class="text-sm text-gray-400 mb-2">New Stock</p>
+                                <p class="text-4xl font-bold text-emerald-400">
                                     {{ session('newQuantity', $transaction->product->inventory ? $transaction->product->inventory->quantity : 0) }}
                                 </p>
                             </div>
                         </div>
                         
                         <div class="text-center mt-4">
-                            <p class="text-sm text-gray-600">Quantity Changed</p>
+                            <p class="text-sm text-gray-400">Quantity Changed</p>
                             <p class="text-2xl font-bold 
-                                @if($transaction->transactionType === 'in') text-green-600
-                                @elseif($transaction->transactionType === 'out') text-red-600
-                                @else text-blue-600 @endif">
+                                @if($transaction->transactionType === 'in') text-emerald-400
+                                @elseif($transaction->transactionType === 'out') text-red-400
+                                @else text-blue-400 @endif">
                                 @if($transaction->transactionType === 'in') +
                                 @elseif($transaction->transactionType === 'out') -
                                 @endif
@@ -119,14 +122,14 @@
                     </div>
 
                     <!-- Actions -->
-                    <div class="flex gap-4 justify-center">
-                        <a href="{{ route('transactions.create') }}" class="bg-green-500 text-white px-6 py-2 rounded-lg hover:bg-green-600 font-medium">
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+                        <a href="{{ route('transactions.create') }}" class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-xl hover:from-emerald-700 hover:to-emerald-800 font-medium shadow-lg transition-all duration-200 text-center">
                             Add Another Transaction
                         </a>
-                        <a href="{{ route('inventory.index') }}" class="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 font-medium">
+                        <a href="{{ route('inventory.index') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 font-medium shadow-lg transition-all duration-200 text-center">
                             View Inventory
                         </a>
-                        <a href="{{ route('transactions.index') }}" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600 font-medium">
+                        <a href="{{ route('transactions.index') }}" class="bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 font-medium shadow-lg transition-all duration-200 text-center">
                             View All Transactions
                         </a>
                     </div>
