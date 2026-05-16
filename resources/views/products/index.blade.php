@@ -183,7 +183,7 @@
                                 {{-- Product Image --}}
                                 <div class="relative bg-gradient-to-br from-gray-700 to-gray-800 h-56 flex items-center justify-center p-6">
                                     @if($product->image)
-                                        <img src="{{ asset($product->image) }}" 
+                                        <img src="{{ asset('storage/' . $product->image) }}" 
                                              alt="{{ $product->product_name }}" 
                                              class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-500">
                                     @else

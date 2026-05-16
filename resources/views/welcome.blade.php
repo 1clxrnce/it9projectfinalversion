@@ -214,7 +214,7 @@
                 @foreach($brands as $brand)
                 <a href="{{ route('products.index', ['brand' => $brand->brand_id]) }}" class="group bg-gray-800 border border-gray-700 rounded-xl p-4 flex flex-col items-center justify-center hover:border-red-500 hover:bg-gray-750 transition-all duration-200 aspect-square">
                     @if($brand->image)
-                        <img src="{{ asset($brand->image) }}" 
+                        <img src="{{ asset('storage/' . $brand->image) }}" 
                              alt="{{ $brand->brand_name }}" 
                              class="max-h-12 max-w-full object-contain group-hover:scale-105 transition-transform duration-200 mb-2">
                     @endif
@@ -263,9 +263,9 @@
                     <div class="relative h-40 bg-gradient-to-br {{ $catData['color'] }} flex items-center justify-center overflow-hidden">
                         <div class="absolute inset-0 bg-black/20"></div>
                         
-                        @if($category->image && file_exists(public_path($category->image)))
+                        @if($category->image && file_exists(public_path('storage/' . $category->image)))
                             {{-- Category Image --}}
-                            <img src="{{ asset($category->image) }}" 
+                            <img src="{{ asset('storage/' . $category->image) }}" 
                                  alt="{{ $category->category_name }}" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         @else
