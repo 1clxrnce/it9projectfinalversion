@@ -1,59 +1,247 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# BJ Computers E-Commerce Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A modern, dark-themed e-commerce platform built with Laravel for managing computer products, inventory, and transactions.
 
-## About Laravel
+## Technology Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**Framework:** Laravel 11  
+**Frontend:** Blade Templates, Tailwind CSS, Vue.js  
+**Database:** MySQL  
+**Build Tool:** Vite  
+**Package Manager:** Composer (PHP), npm (Node.js)  
+**Development Environment:** XAMPP, VS Code  
+**Version Control:** Git, GitHub  
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Product Management:** Create, read, update, and delete products with categories and brands
+- **Inventory Tracking:** Real-time stock management with low/medium/out-of-stock indicators
+- **Transaction History:** Complete transaction logging with stock snapshots
+- **User Management:** Admin panel for managing users with different roles (admin, staff, customer)
+- **Dark Theme UI:** Modern, minimalist dark interface with red accent colors
+- **Responsive Design:** Mobile-friendly grid and list view options
+- **Category & Brand Filtering:** Server-side filtering for products
 
-## Learning Laravel
+## Prerequisites
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Before you begin, ensure you have the following installed:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **PHP 8.2+** (included with XAMPP)
+- **MySQL 8.0+** (included with XAMPP)
+- **Node.js 18+** and npm
+- **Composer** (PHP dependency manager)
+- **XAMPP** (Apache + MySQL + PHP)
+- **Git**
 
-## Laravel Sponsors
+## Installation & Setup
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clone the Repository
 
-### Premium Partners
+```bash
+git clone https://github.com/1clxrnce/it9projectfinalversion.git
+cd it9projectfinalversion
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 2. Install PHP Dependencies
 
-## Contributing
+```bash
+composer install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Install Node Dependencies
 
-## Code of Conduct
+```bash
+npm install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Environment Configuration
 
-## Security Vulnerabilities
+Copy the example environment file and generate an app key:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+### 5. Configure Database
+
+Edit `.env` file with your database credentials:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=it9project
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+**Note:** If using XAMPP, the default MySQL user is `root` with no password.
+
+### 6. Start XAMPP
+
+1. Open XAMPP Control Panel
+2. Start **Apache** and **MySQL** services
+3. Verify MySQL is running on port 3306
+
+### 7. Run Migrations
+
+```bash
+php artisan migrate
+```
+
+This creates all necessary database tables.
+
+### 8. Create Storage Symlink
+
+```bash
+php artisan storage:link
+```
+
+This allows images stored in `storage/app/public/` to be accessible via the web.
+
+### 9. Build Frontend Assets
+
+```bash
+npm run build
+```
+
+For development with hot reload:
+
+```bash
+npm run dev
+```
+
+## Running the Application
+
+### Development Server
+
+```bash
+php artisan serve
+```
+
+The application will be available at `http://127.0.0.1:8000`
+
+### Default Admin Credentials
+
+After migration, you can create an admin user or check the database for existing credentials.
+
+## Project Structure
+
+```
+├── app/
+│   ├── Http/Controllers/     # Application controllers
+│   ├── Models/               # Eloquent models
+│   └── Providers/            # Service providers
+├── config/                   # Configuration files
+├── database/
+│   ├── migrations/           # Database migrations
+│   └── seeders/              # Database seeders
+├── resources/
+│   ├── views/                # Blade templates
+│   │   ├── admin/            # Admin panel views
+│   │   ├── products/         # Product views
+│   │   ├── transactions/     # Transaction views
+│   │   └── layouts/          # Layout templates
+│   └── css/                  # Tailwind CSS
+├── routes/
+│   └── web.php               # Web routes
+├── storage/
+│   └── app/public/           # User-uploaded files (images)
+└── public/
+    └── build/                # Compiled assets
+```
+
+## Key Routes
+
+- `/` - Homepage with product categories
+- `/products` - Product listing with filtering
+- `/products/{id}` - Product details
+- `/dashboard` - Admin dashboard with inventory overview
+- `/admin/products` - Admin product management
+- `/admin/users` - Admin user management
+- `/transactions` - Transaction history
+- `/transactions/{id}` - Transaction details
+
+## Database Tables
+
+- `users` - User accounts with roles
+- `products` - Product catalog
+- `categories` - Product categories
+- `brands` - Product brands
+- `stock_transactions` - Inventory transaction history
+- `transactions` - Order/transaction records
+
+## Development Commands
+
+```bash
+# Build assets for production
+npm run build
+
+# Watch for asset changes (development)
+npm run dev
+
+# Run database migrations
+php artisan migrate
+
+# Create a new migration
+php artisan make:migration migration_name
+
+# Seed the database
+php artisan db:seed
+
+# Clear application cache
+php artisan cache:clear
+
+# List all routes
+php artisan route:list
+```
+
+## Deployment
+
+For production deployment:
+
+1. Set environment variables in `.env`:
+   ```env
+   APP_ENV=production
+   APP_DEBUG=false
+   ```
+
+2. Cache configuration and routes:
+   ```bash
+   php artisan config:cache
+   php artisan route:cache
+   ```
+
+3. Build frontend assets:
+   ```bash
+   npm run build
+   ```
+
+4. Ensure MySQL database is accessible from your hosting provider
+
+5. Run migrations on the production server:
+   ```bash
+   php artisan migrate --force
+   ```
+
+## Troubleshooting
+
+**Issue:** "XAMPP MySQL not starting"
+- Check if port 3306 is already in use
+- Restart XAMPP services
+
+**Issue:** "Vendor folder missing after cloning"
+- Run `composer install` to restore PHP dependencies
+
+**Issue:** "Images not displaying"
+- Ensure storage symlink is created: `php artisan storage:link`
+- Check images are in `storage/app/public/`
+
+**Issue:** "npm run dev not working"
+- Run `npm install` to ensure all dependencies are installed
+- Check Node.js version: `node --version`
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-source software licensed under the MIT license.

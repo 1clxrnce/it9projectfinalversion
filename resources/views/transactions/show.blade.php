@@ -126,7 +126,7 @@
                         <a href="{{ route('transactions.create') }}" class="bg-gradient-to-r from-emerald-600 to-emerald-700 text-white px-6 py-3 rounded-xl hover:from-emerald-700 hover:to-emerald-800 font-medium shadow-lg transition-all duration-200 text-center">
                             Add Another Transaction
                         </a>
-                        <a href="{{ route('inventory.index') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 font-medium shadow-lg transition-all duration-200 text-center">
+                        <a href="{{ route('admin.products.index') }}" class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-3 rounded-xl hover:from-blue-700 hover:to-blue-800 font-medium shadow-lg transition-all duration-200 text-center">
                             View Inventory
                         </a>
                         <a href="{{ route('transactions.index') }}" class="bg-gray-600 text-white px-6 py-3 rounded-xl hover:bg-gray-700 font-medium shadow-lg transition-all duration-200 text-center">

@@ -146,14 +146,29 @@
                                 <p class="text-xl font-bold text-white"><span id="visibleCount">{{ $products->count() }}</span> <span class="text-gray-500 font-normal text-lg">of {{ $products->total() }}</span></p>
                             </div>
                         </div>
-                        <select id="sortSelect" class="w-full sm:w-auto min-w-[220px] px-4 py-3 border border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent bg-gray-700 text-white font-medium shadow-sm">
-                            <option value="name-asc">Name: A → Z</option>
-                            <option value="name-desc">Name: Z → A</option>
-                            <option value="price-asc">Price: Low → High</option>
-                            <option value="price-desc">Price: High → Low</option>
-                            <option value="stock-asc">Stock: Low → High</option>
-                            <option value="stock-desc">Stock: High → Low</option>
-                        </select>
+                        <div class="flex items-center gap-3 w-full sm:w-auto">
+                            {{-- View Toggle --}}
+                            <div class="flex items-center bg-gray-700 rounded-xl p-1 border border-gray-600">
+                                <button id="gridViewBtn" onclick="setView('grid')" class="p-2 rounded-lg bg-red-600 text-white transition-all" title="Grid View">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+                                    </svg>
+                                </button>
+                                <button id="listViewBtn" onclick="setView('list')" class="p-2 rounded-lg text-gray-400 hover:text-white transition-all" title="List View">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <select id="sortSelect" class="w-full sm:w-auto min-w-[220px] px-4 py-3 border border-gray-600 rounded-xl text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent bg-gray-700 text-white font-medium shadow-sm">
+                                <option value="name-asc">Name: A → Z</option>
+                                <option value="name-desc">Name: Z → A</option>
+                                <option value="price-asc">Price: Low → High</option>
+                                <option value="price-desc">Price: High → Low</option>
+                                <option value="stock-asc">Stock: Low → High</option>
+                                <option value="stock-desc">Stock: High → Low</option>
+                            </select>
+                        </div>
                     </div>
 
                     @if($products->count() > 0)
@@ -259,6 +274,36 @@
         document.addEventListener('DOMContentLoaded', function() {
             let selectedCategory = '{{ request("category") ?? "all" }}';
             let selectedBrand = '{{ request("brand") ?? "all" }}';
+            let currentView = 'grid';
+
+            function setView(view) {
+                currentView = view;
+                const grid = document.getElementById('productsGrid');
+                const gridBtn = document.getElementById('gridViewBtn');
+                const listBtn = document.getElementById('listViewBtn');
+
+                if (view === 'grid') {
+                    grid.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6';
+                    document.querySelectorAll('.product-card').forEach(card => {
+                        card.classList.remove('list-card');
+                    });
+                    gridBtn.classList.add('bg-red-600', 'text-white');
+                    gridBtn.classList.remove('text-gray-400');
+                    listBtn.classList.remove('bg-red-600', 'text-white');
+                    listBtn.classList.add('text-gray-400');
+                } else {
+                    grid.className = 'flex flex-col gap-3';
+                    document.querySelectorAll('.product-card').forEach(card => {
+                        card.classList.add('list-card');
+                    });
+                    listBtn.classList.add('bg-red-600', 'text-white');
+                    listBtn.classList.remove('text-gray-400');
+                    gridBtn.classList.remove('bg-red-600', 'text-white');
+                    gridBtn.classList.add('text-gray-400');
+                }
+            }
+
+            window.setView = setView;
 
             // Price sliders
             const minPriceSlider = document.getElementById('minPriceSlider');
@@ -372,5 +417,27 @@
             }
         });
     </script>
+    <style>
+        .list-card {
+            display: flex !important;
+            flex-direction: row !important;
+        }
+        .list-card .relative.bg-gradient-to-br {
+            width: 120px !important;
+            min-width: 120px !important;
+            height: auto !important;
+            flex-shrink: 0;
+        }
+        .list-card .p-6 {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .list-card h3 {
+            min-height: unset !important;
+        }
+    </style>
 </body>
 </html>

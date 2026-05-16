@@ -58,18 +58,32 @@
                         <span class="text-xs font-semibold text-orange-400 bg-orange-900/30 px-2.5 py-1 rounded-full animate-pulse">Alert</span>
                     </div>
                     <h3 class="text-3xl font-bold text-white mb-1">{{ $lowStockProducts }}</h3>
-                    <p class="text-sm text-gray-400">Low stock items</p>
+                    <p class="text-sm text-gray-400">Low stock (1-10)</p>
+                </div>
+
+                {{-- Medium Stock --}}
+                <div class="bg-gray-800 rounded-2xl border border-yellow-700/50 p-6 hover:shadow-xl hover:shadow-yellow-500/10 transition-all duration-300">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-xl flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xs font-semibold text-yellow-400 bg-yellow-900/30 px-2.5 py-1 rounded-full">Medium</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-1">{{ $mediumStockProducts }}</h3>
+                    <p class="text-sm text-gray-400">Medium stock (11-20)</p>
                 </div>
 
                 {{-- Out of Stock --}}
-                <div class="bg-gray-800 rounded-2xl border border-gray-700 p-6 hover:shadow-xl hover:shadow-gray-500/10 transition-all duration-300">
+                <div class="bg-gray-800 rounded-2xl border border-red-900/50 p-6 hover:shadow-xl hover:shadow-red-500/10 transition-all duration-300">
                     <div class="flex items-center justify-between mb-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-gray-600 to-gray-700 rounded-xl flex items-center justify-center">
+                        <div class="w-12 h-12 bg-gradient-to-br from-red-700 to-red-800 rounded-xl flex items-center justify-center">
                             <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                             </svg>
                         </div>
-                        <span class="text-xs font-semibold text-gray-400 bg-gray-700 px-2.5 py-1 rounded-full">Empty</span>
+                        <span class="text-xs font-semibold text-red-400 bg-red-900/30 px-2.5 py-1 rounded-full">Empty</span>
                     </div>
                     <h3 class="text-3xl font-bold text-white mb-1">{{ $outOfStockProducts }}</h3>
                     <p class="text-sm text-gray-400">Out of stock</p>
@@ -77,51 +91,126 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {{-- Low Stock Products --}}
+                {{-- Stock Alerts --}}
                 <div class="lg:col-span-2 bg-gray-800 rounded-2xl border border-gray-700 p-6">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <h3 class="text-lg font-bold text-white">Low Stock Alert</h3>
-                            <p class="text-sm text-gray-400">Products that need restocking</p>
+                            <h3 class="text-lg font-bold text-white">Stock Alerts</h3>
+                            <p class="text-sm text-gray-400">Products needing attention</p>
                         </div>
                         <a href="{{ route('admin.products.index') }}" class="text-sm text-red-400 hover:text-red-300 font-medium">View All →</a>
                     </div>
 
-                    @if($lowStockItems->isEmpty())
-                        <div class="text-center py-8">
-                            <svg class="w-16 h-16 text-emerald-500 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                            <p class="text-gray-400 font-medium">All products are well stocked!</p>
+                    {{-- Tabs --}}
+                    <div x-data="{ tab: 'low' }">
+                        <div class="flex gap-2 mb-4">
+                            <button @click="tab = 'low'" :class="tab === 'low' ? 'bg-orange-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'" class="px-4 py-1.5 rounded-full text-xs font-semibold transition">
+                                Low (1-10) <span class="ml-1">{{ $lowStockProducts }}</span>
+                            </button>
+                            <button @click="tab = 'medium'" :class="tab === 'medium' ? 'bg-yellow-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'" class="px-4 py-1.5 rounded-full text-xs font-semibold transition">
+                                Medium (11-20) <span class="ml-1">{{ $mediumStockProducts }}</span>
+                            </button>
+                            <button @click="tab = 'out'" :class="tab === 'out' ? 'bg-red-700 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'" class="px-4 py-1.5 rounded-full text-xs font-semibold transition">
+                                Out of Stock <span class="ml-1">{{ $outOfStockProducts }}</span>
+                            </button>
                         </div>
-                    @else
-                        <div class="space-y-3">
-                            @foreach($lowStockItems as $item)
-                            <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
-                                <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
-                                    @else
-                                        <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path>
-                                        </svg>
-                                    @endif
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <h4 class="font-semibold text-white truncate">{{ $item->product_name }}</h4>
-                                    <p class="text-sm text-gray-400">{{ $item->category->category_name }} • {{ $item->brand->brand_name ?? 'No Brand' }}</p>
-                                </div>
-                                <div class="text-right">
-                                    <div class="flex items-center gap-2 mb-1">
-                                        <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
-                                        <span class="text-lg font-bold text-red-400">{{ $item->inventory->quantity }}</span>
+
+                        {{-- Low Stock --}}
+                        <div x-show="tab === 'low'">
+                            @if($lowStockItems->isEmpty())
+                                <p class="text-center text-gray-400 py-6">No low stock items.</p>
+                            @else
+                                <div class="space-y-3">
+                                    @foreach($lowStockItems as $item)
+                                    <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                                        <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                            @else
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="font-semibold text-white truncate">{{ $item->product_name }}</h4>
+                                            <p class="text-sm text-gray-400">{{ $item->category->category_name }} • {{ $item->brand->brand_name ?? 'No Brand' }}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+                                                <span class="text-lg font-bold text-orange-400">{{ $item->inventory->quantity }}</span>
+                                            </div>
+                                            <a href="{{ route('transactions.create') }}?product={{ $item->product_id }}" class="text-xs text-red-400 hover:text-red-300 font-medium">Add Stock →</a>
+                                        </div>
                                     </div>
-                                    <a href="{{ route('transactions.create') }}?product={{ $item->product_id }}" class="text-xs text-red-400 hover:text-red-300 font-medium">Add Stock →</a>
+                                    @endforeach
                                 </div>
-                            </div>
-                            @endforeach
+                            @endif
                         </div>
-                    @endif
+
+                        {{-- Medium Stock --}}
+                        <div x-show="tab === 'medium'">
+                            @if($mediumStockItems->isEmpty())
+                                <p class="text-center text-gray-400 py-6">No medium stock items.</p>
+                            @else
+                                <div class="space-y-3">
+                                    @foreach($mediumStockItems as $item)
+                                    <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                                        <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                            @else
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="font-semibold text-white truncate">{{ $item->product_name }}</h4>
+                                            <p class="text-sm text-gray-400">{{ $item->category->category_name }} • {{ $item->brand->brand_name ?? 'No Brand' }}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="w-2 h-2 bg-yellow-500 rounded-full"></span>
+                                                <span class="text-lg font-bold text-yellow-400">{{ $item->inventory->quantity }}</span>
+                                            </div>
+                                            <a href="{{ route('transactions.create') }}?product={{ $item->product_id }}" class="text-xs text-red-400 hover:text-red-300 font-medium">Add Stock →</a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Out of Stock --}}
+                        <div x-show="tab === 'out'">
+                            @if($outOfStockItems->isEmpty())
+                                <p class="text-center text-gray-400 py-6">No out of stock items.</p>
+                            @else
+                                <div class="space-y-3">
+                                    @foreach($outOfStockItems as $item)
+                                    <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
+                                        <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                            @else
+                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
+                                            @endif
+                                        </div>
+                                        <div class="flex-1 min-w-0">
+                                            <h4 class="font-semibold text-white truncate">{{ $item->product_name }}</h4>
+                                            <p class="text-sm text-gray-400">{{ $item->category->category_name }} • {{ $item->brand->brand_name ?? 'No Brand' }}</p>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="w-2 h-2 bg-red-500 rounded-full"></span>
+                                                <span class="text-lg font-bold text-red-400">0</span>
+                                            </div>
+                                            <a href="{{ route('transactions.create') }}?product={{ $item->product_id }}" class="text-xs text-red-400 hover:text-red-300 font-medium">Add Stock →</a>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Quick Actions --}}

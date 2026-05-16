@@ -38,6 +38,11 @@ Route::get('/dashboard', function () {
         ->whereHas('inventory', function($query) {
             $query->whereBetween('quantity', [1, 10]);
         })->count();
+
+    $mediumStockProducts = \App\Models\Product::with('inventory')
+        ->whereHas('inventory', function($query) {
+            $query->whereBetween('quantity', [11, 20]);
+        })->count();
     
     $outOfStockProducts = \App\Models\Product::with('inventory')
         ->whereHas('inventory', function($query) {
@@ -58,7 +63,7 @@ Route::get('/dashboard', function () {
         ->take(5)
         ->get();
     
-    // Low stock products - fixed query
+    // Low stock items - 1-10
     $lowStockItems = \App\Models\Product::with(['inventory', 'category', 'brand'])
         ->whereHas('inventory', function($query) {
             $query->where('quantity', '<=', 10)->where('quantity', '>', 0);
@@ -68,6 +73,27 @@ Route::get('/dashboard', function () {
             return $product->inventory ? $product->inventory->quantity : 0;
         })
         ->take(5);
+
+    // Medium stock items - 11-20
+    $mediumStockItems = \App\Models\Product::with(['inventory', 'category', 'brand'])
+        ->whereHas('inventory', function($query) {
+            $query->whereBetween('quantity', [11, 20]);
+        })
+        ->get()
+        ->sortBy(function($product) {
+            return $product->inventory ? $product->inventory->quantity : 0;
+        })
+        ->take(5);
+
+    // Out of stock items
+    $outOfStockItems = \App\Models\Product::with(['inventory', 'category', 'brand'])
+        ->where(function($query) {
+            $query->whereHas('inventory', function($q) {
+                $q->where('quantity', 0);
+            })->orWhereDoesntHave('inventory');
+        })
+        ->take(5)
+        ->get();
     
     // Stock by category
     $stockByCategory = \App\Models\Category::withCount('products')
@@ -90,10 +116,13 @@ Route::get('/dashboard', function () {
         'totalBrands',
         'totalUsers',
         'lowStockProducts',
+        'mediumStockProducts',
         'outOfStockProducts',
         'totalInventoryValue',
         'recentTransactions',
         'lowStockItems',
+        'mediumStockItems',
+        'outOfStockItems',
         'stockByCategory'
     ));
 })->middleware(['auth', 'verified'])->name('dashboard');
