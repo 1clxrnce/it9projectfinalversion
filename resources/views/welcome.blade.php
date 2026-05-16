@@ -13,7 +13,7 @@
             <div class="flex justify-between items-center h-20">
                 <a href="{{ route('home') }}" class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                        <img src="{{ asset('logo/logo.png') }}" alt="{{ config('app.name') }} Logo" class="w-full h-full object-contain">
+                        <img src="{{ asset('storage/logo/logo.png') }}" alt="{{ config('app.name') }} Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
                         <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">{{ config('app.name') }}</span>
@@ -82,19 +82,19 @@
             <div class="carousel-slides relative w-full h-full">
                 {{-- Slide 1 --}}
                 <div class="carousel-slide absolute inset-0 opacity-100 transition-opacity duration-1000">
-                    <img src="{{ asset('dekstop/670862125_1488677959937361_431219952873626822_n.jpg') }}" alt="Slide 1" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/dekstop/670862125_1488677959937361_431219952873626822_n.jpg') }}" alt="Slide 1" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 
                 {{-- Slide 2 --}}
                 <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-                    <img src="{{ asset('dekstop/d6cfe5de-7a67-4c77-b665-35420c0238d8.jpg') }}" alt="Slide 2" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/dekstop/d6cfe5de-7a67-4c77-b665-35420c0238d8.jpg') }}" alt="Slide 2" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 
                 {{-- Slide 3 --}}
                 <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000">
-                    <img src="{{ asset('dekstop/d065a61e-9733-462b-a524-42238f574c05.jpg') }}" alt="Slide 3" class="w-full h-full object-cover">
+                    <img src="{{ asset('storage/dekstop/d065a61e-9733-462b-a524-42238f574c05.jpg') }}" alt="Slide 3" class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
             </div>

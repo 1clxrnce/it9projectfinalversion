@@ -13,7 +13,7 @@
             <div class="flex justify-between items-center h-20">
                 <a href="{{ route('home') }}" class="flex items-center gap-3">
                     <div class="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg overflow-hidden">
-                        <img src="{{ asset('logo/logo.png') }}" alt="{{ config('app.name') }} Logo" class="w-full h-full object-contain">
+                        <img src="{{ asset('storage/logo/logo.png') }}" alt="{{ config('app.name') }} Logo" class="w-full h-full object-contain">
                     </div>
                     <div>
                         <span class="text-2xl font-bold bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">{{ config('app.name') }}</span>
