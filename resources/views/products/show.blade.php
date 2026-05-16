@@ -12,7 +12,7 @@
                     {{-- Product Image --}}
                     <div class="bg-gradient-to-br from-gray-700 to-gray-800 rounded-xl p-8 flex items-center justify-center">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" 
+                            <img src="{{ asset($product->image) }}" 
                                  alt="{{ $product->product_name }}" 
                                  class="max-h-96 max-w-full object-contain">
                         @else

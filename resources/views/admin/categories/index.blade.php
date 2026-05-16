@@ -70,9 +70,9 @@
 
                     {{-- Category Image/Icon --}}
                     <div class="h-32 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center p-4 rounded-t-2xl overflow-hidden relative">
-                        @if($category->image && file_exists(public_path('storage/' . $category->image)))
+                        @if($category->image && file_exists(public_path('' . $category->image)))
                             {{-- Display uploaded image --}}
-                            <img src="{{ asset('storage/' . $category->image) }}" 
+                            <img src="{{ asset('' . $category->image) }}" 
                                  alt="{{ $category->category_name }}" 
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                         @else

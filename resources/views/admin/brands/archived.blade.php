@@ -43,7 +43,7 @@
                         {{-- Brand Image --}}
                         <div class="h-32 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center p-4 rounded-t-2xl overflow-hidden relative">
                             @if($brand->image)
-                                <img src="{{ asset('storage/' . $brand->image) }}" 
+                                <img src="{{ asset('' . $brand->image) }}" 
                                      alt="{{ $brand->brand_name }}" 
                                      class="max-h-full max-w-full object-contain grayscale group-hover:scale-110 transition-transform duration-500">
                             @else

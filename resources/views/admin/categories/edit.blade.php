@@ -71,7 +71,7 @@
                             </label>
                             @if($category->image)
                                 <div class="mb-4 flex items-center gap-4">
-                                    <img src="{{ asset('storage/' . $category->image) }}" 
+                                    <img src="{{ asset('' . $category->image) }}" 
                                          alt="{{ $category->category_name }}" 
                                          class="w-32 h-32 object-cover rounded-xl border-2 border-gray-600">
                                     <div>

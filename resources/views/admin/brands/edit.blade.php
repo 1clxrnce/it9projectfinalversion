@@ -24,7 +24,7 @@
                             <label for="image" class="block text-sm font-medium text-gray-300 mb-2">Brand Image</label>
                             @if($brand->image)
                                 <div class="mb-4">
-                                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->brand_name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-600">
+                                    <img src="{{ asset('' . $brand->image) }}" alt="{{ $brand->brand_name }}" class="w-32 h-32 object-cover rounded-lg border border-gray-600">
                                     <p class="text-sm text-gray-400 mt-1">Current image</p>
                                 </div>
                             @endif

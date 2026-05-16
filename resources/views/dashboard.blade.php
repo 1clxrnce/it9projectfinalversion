@@ -125,7 +125,7 @@
                                     <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
                                         <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
                                             @if($item->image)
-                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                                <img src="{{ asset('' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
                                             @else
                                                 <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
                                             @endif
@@ -157,7 +157,7 @@
                                     <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
                                         <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
                                             @if($item->image)
-                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                                <img src="{{ asset('' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
                                             @else
                                                 <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
                                             @endif
@@ -189,7 +189,7 @@
                                     <div class="flex items-center gap-4 p-4 bg-gray-700 rounded-xl hover:bg-gray-600 transition">
                                         <div class="w-12 h-12 bg-gray-600 rounded-lg flex items-center justify-center flex-shrink-0 border border-gray-500">
                                             @if($item->image)
-                                                <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
+                                                <img src="{{ asset('' . $item->image) }}" alt="{{ $item->product_name }}" class="w-10 h-10 object-contain">
                                             @else
                                                 <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"></path></svg>
                                             @endif

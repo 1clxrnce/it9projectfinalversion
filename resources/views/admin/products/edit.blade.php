@@ -28,7 +28,7 @@
                         {{-- Product Image --}}
                         <div class="h-64 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center p-6">
                             @if($product->image)
-                                <img src="{{ asset('storage/' . $product->image) }}" 
+                                <img src="{{ asset('' . $product->image) }}" 
                                      alt="{{ $product->product_name }}" 
                                      class="max-h-full max-w-full object-contain rounded-lg">
                             @else
@@ -61,7 +61,7 @@
                                     <label class="text-sm font-medium text-gray-400">Brand</label>
                                     <div class="flex items-center gap-2 mt-1">
                                         @if($product->brand && $product->brand->image)
-                                            <img src="{{ asset('storage/' . $product->brand->image) }}" 
+                                            <img src="{{ asset('' . $product->brand->image) }}" 
                                                  alt="{{ $product->brand->brand_name }}" 
                                                  class="w-6 h-6 object-contain">
                                         @endif
@@ -150,7 +150,7 @@
                                 <div class="space-y-3">
                                     @if($product->image)
                                         <div class="flex items-center gap-4 p-3 bg-gray-700/50 rounded-lg">
-                                            <img src="{{ asset('storage/' . $product->image) }}" 
+                                            <img src="{{ asset('' . $product->image) }}" 
                                                  alt="{{ $product->product_name }}" 
                                                  class="w-16 h-16 object-cover rounded-lg border border-gray-600">
                                             <div>

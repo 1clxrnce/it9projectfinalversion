@@ -23,13 +23,13 @@
                     {{-- Logo / Toggle --}}
                     <div class="flex items-center justify-between px-4 py-4 border-b border-gray-800">
                         <div x-show="sidebarOpen" class="flex items-center gap-3">
-                            <img src="{{ asset('storage/logo/logo.png') }}" alt="BJ Computers Logo" class="w-8 h-8 object-contain">
+                            <img src="{{ asset('logo/logo.png') }}" alt="BJ Computers Logo" class="w-8 h-8 object-contain">
                             <span class="text-lg font-bold truncate text-white">
                                 {{ config('app.name') }}
                             </span>
                         </div>
                         <div x-show="!sidebarOpen" class="flex items-center justify-center w-full">
-                            <img src="{{ asset('storage/logo/logo.png') }}" alt="BJ Computers Logo" class="w-8 h-8 object-contain">
+                            <img src="{{ asset('logo/logo.png') }}" alt="BJ Computers Logo" class="w-8 h-8 object-contain">
                         </div>
                         <button @click="sidebarOpen = !sidebarOpen"
                                 class="text-gray-400 hover:text-white focus:outline-none transition-colors duration-200">
