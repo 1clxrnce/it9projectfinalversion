@@ -235,8 +235,13 @@ For production deployment:
 - Run `composer install` to restore PHP dependencies
 
 **Issue:** "Images not displaying"
-- Ensure storage symlink is created: `php artisan storage:link`
-- Check images are in `storage/app/public/`
+- Place images in the `public/` folder:
+  - `public/logo/logo.png` - BJ Computers logo
+  - `public/dekstop/` - Carousel/banner images
+  - `public/products/` - Product images
+  - `public/brands/` - Brand logos
+  - `public/categories/` - Category images
+- Images are served directly from the public folder, not from storage
 
 **Issue:** "npm run dev not working"
 - Run `npm install` to ensure all dependencies are installed
