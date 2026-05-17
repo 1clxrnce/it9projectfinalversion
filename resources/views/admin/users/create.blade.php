@@ -19,28 +19,28 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('admin.users.store') }}">
+                    <form method="POST" action="{{ route('admin.users.store') }}" autocomplete="off">
                         @csrf
 
                         <div class="grid grid-cols-2 gap-4 mb-4">
                             <div>
                                 <label for="firstName" class="block text-sm font-medium text-gray-300 mb-2">First Name</label>
-                                <input type="text" name="firstName" id="firstName" value="{{ old('firstName') }}" required class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                                <input type="text" name="firstName" id="firstName" value="{{ old('firstName') }}" required autocomplete="given-name" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                             </div>
                             <div>
                                 <label for="lastName" class="block text-sm font-medium text-gray-300 mb-2">Last Name</label>
-                                <input type="text" name="lastName" id="lastName" value="{{ old('lastName') }}" required class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                                <input type="text" name="lastName" id="lastName" value="{{ old('lastName') }}" required autocomplete="family-name" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                             </div>
                         </div>
 
                         <div class="mb-4">
                             <label for="email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
-                            <input type="email" name="email" id="email" value="{{ old('email') }}" required class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                            <input type="email" name="email" id="email" value="{{ old('email') }}" required autocomplete="email" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                         </div>
 
                         <div class="mb-4">
                             <label for="mobilePhone" class="block text-sm font-medium text-gray-300 mb-2">Mobile Phone</label>
-                            <input type="text" name="mobilePhone" id="mobilePhone" value="{{ old('mobilePhone') }}" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                            <input type="text" name="mobilePhone" id="mobilePhone" value="{{ old('mobilePhone') }}" autocomplete="tel" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                         </div>
 
                         <div class="mb-4">
@@ -55,11 +55,11 @@
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div>
                                 <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
-                                <input type="password" name="password" id="password" required class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                                <input type="password" name="password" id="password" required autocomplete="new-password" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                             </div>
                             <div>
                                 <label for="password_confirmation" class="block text-sm font-medium text-gray-300 mb-2">Confirm Password</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" required class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+                                <input type="password" name="password_confirmation" id="password_confirmation" required autocomplete="new-password" class="w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm text-gray-100 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
                             </div>
                         </div>
 
